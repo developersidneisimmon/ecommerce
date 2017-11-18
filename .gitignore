@@ -1,0 +1,4 @@
+backend/lib
+backend/vendor
+frontend/vendor
+*.log
