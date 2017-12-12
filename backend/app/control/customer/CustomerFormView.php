@@ -18,6 +18,19 @@ class CustomerFormView extends TPage {
     function __construct() {
         parent::__construct();
 
+        // Client HTTP
+        $result = ZipCodeRequest::getAddressByZipCode(37704252);
+        /**
+          array (size=2)
+          'code' => int 200
+          'response' =>
+          object(stdClass)[34]
+          public 'zipcode' => string '37704252' (length=8)
+          public 'street' => string 'Rua Trinta e Um' (length=15)
+          public 'neighborhood' => string 'São José' (length=10)
+          public 'city' => string 'Poços de Caldas' (length=16)
+          public 'state' => string 'MG' (length=2)
+         */
         // creates the form
         $this->form = new \Adianti\Wrapper\BootstrapFormBuilder('form_customer');
         $this->form->setFormTitle('Cliente Detalhes');
@@ -65,19 +78,29 @@ class CustomerFormView extends TPage {
         $created_at->setEditable(false);
         $updated_at->setEditable(false);
 
-        $this->form->appendPage('Informações básicas');
+        $this->form->appendPage('Dados Cadastrais');
         $this->form->addFields([new TLabel('Código')], [$id], [new TLabel('Tipo')], [$type]);
-        $this->form->addFields([new TLabel('Situação.')], [$status], [new TLabel('Documento')], [$document_number]);
+        $this->form->addFields([new TLabel('Situação')], [$status], [new TLabel('Documento')], [$document_number]);
         $this->form->addFields([new TLabel('Nome')], [$name], [new TLabel('E-mail')], [$email]);
         $this->form->addFields([new TLabel('Genero')], [$gender], [new TLabel('Data nascimento')], [$birthday]);
         $this->form->addFields([new TLabel('Data cadastro')], [$created_at], [new TLabel('Data atualizado')], [$updated_at]);
         //$this->form->addFields( [ new TLabel('Category') ], [ $category_id ], [ new TLabel('Gender') ], [ $gender ] );
         //$this->form->addFields( [ new TLabel('City') ],     [ $city_id ], [ new TLabel('Name') ], [ $city_name ] );
 
+        $this->form->appendPage('Endereço de Entrega');
 
-        $this->form->appendPage('Skills');
+        // create the form fields
+        $cep = new \Adianti\Widget\Form\TEntry('cep');
+        $cep->setSize('150');
+
+
+        // add the fields inside the form
+        $this->form->addContent([new TLabel('Cep')], [$cep]);
+
+
         //$skill_list = new TDBCheckGroup('skill_list', 'permission', 'Skill', 'id', 'name');
         // $this->form->addFields( [ new TLabel('Skill') ],     [ $skill_list ] );
+
 
         $this->form->addAction('Salvar', new TAction(array($this, 'onSave')), 'fa:save green');
         $this->form->addAction('Lista', new TAction(array('CustomerDataGridView', 'onReload')), 'fa:table blue');

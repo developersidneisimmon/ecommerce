@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Tempo de geração: 15/11/2017 às 21:44
+-- Tempo de geração: 19/11/2017 às 21:28
 -- Versão do servidor: 10.0.31-MariaDB-0ubuntu0.16.04.2
 -- Versão do PHP: 7.0.22-0ubuntu0.16.04.1
 
@@ -39,7 +39,7 @@ CREATE TABLE `customer` (
   `birthday` datetime DEFAULT NULL,
   `gender` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'A',
-  `created_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -48,7 +48,9 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id`, `external_id`, `type`, `country`, `document_type`, `document_number`, `name`, `email`, `password`, `birthday`, `gender`, `status`, `created_at`, `updated_at`) VALUES
-(1, '#123456', 'individual', 'br', 'cpf', '08828926651', 'Sidnei da Silva Simeão', 'sidneisimmon@gmail.com', '6e8b5c41a5dd39ace69394888ca9163c', '0000-00-00 00:00:00', 'M', 'A', '2017-11-15 02:00:00', NULL);
+(1, '#123456', 'individual', 'br', 'cpf', '08828926651', 'Sidnei da Silva Simeão', 'sidneisimmon@gmail.com', '6e8b5c41a5dd39ace69394888ca9163c', '1987-12-30 12:53:28', 'M', 'A', '2017-11-15 14:16:37', '2017-11-18 14:53:28'),
+(2, NULL, 'individual', '', '', '13320716603', 'Brenda Ellen Simeão', 'be_ellen@hotmail.com', '', '1994-06-02 12:53:24', 'F', 'A', '2017-11-18 02:00:00', '2017-11-18 14:53:24'),
+(3, NULL, 'corporation', '', '', '62889669000133', 'Simmon\'s Corp', 'simmons.corp@gmail.com', '', '2017-11-18 20:08:17', 'M', 'A', '2017-11-18 14:53:16', '2017-11-18 22:08:17');
 
 -- --------------------------------------------------------
 
@@ -114,7 +116,14 @@ INSERT INTO `system_access_log` (`id`, `sessionid`, `login`, `login_time`, `logo
 (1, 'm4jlc5268of9h58tem8dpglfu7', 'admin', '2017-11-15 22:38:19', '2017-11-15 23:06:11'),
 (2, 'k1a3m4eiuvb1nom8i47f4i6e12', 'user', '2017-11-15 23:06:20', '2017-11-15 23:13:42'),
 (3, 't1teqeu3smgh6bm35l1deg7g46', 'user', '2017-11-15 23:13:48', '2017-11-15 23:14:24'),
-(4, 's4lrjnbe46mpbqobh5ct9i3an7', 'sidneisimmon', '2017-11-15 23:14:33', '0000-00-00 00:00:00');
+(4, 's4lrjnbe46mpbqobh5ct9i3an7', 'sidneisimmon', '2017-11-15 23:14:33', '0000-00-00 00:00:00'),
+(5, 'pjnludft9slte2delpnipufru6', 'sidneisimmon', '2017-11-18 09:42:46', '2017-11-18 10:42:04'),
+(6, '4fdb3th6m47orafa29u4c27cb2', 'sidneisimmon', '2017-11-18 10:42:13', '0000-00-00 00:00:00'),
+(7, '8epqvonamd960khgmm624717h3', 'sidneisimmon', '2017-11-19 11:17:36', '2017-11-19 14:49:31'),
+(8, '055nolilercckld946hl92h927', 'sidneisimmon', '2017-11-19 14:49:40', '2017-11-19 21:09:33'),
+(9, 'chdcoom5m4suusod065hq91jn5', 'sidneisimmon', '2017-11-19 21:09:40', '2017-11-19 23:13:27'),
+(10, 't5obc9289gkuockd8t49o1uka3', 'sidneisimmon', '2017-11-19 23:13:39', '2017-11-19 23:14:49'),
+(11, '7p202e1e3qi1sr35rinsmp5vk1', 'sidneisimmon', '2017-11-19 23:15:03', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -266,7 +275,8 @@ INSERT INTO `system_group_program` (`id`, `system_group_id`, `system_program_id`
 (67, 1, 33),
 (68, 1, 34),
 (69, 1, 35),
-(70, 1, 36);
+(70, 1, 36),
+(71, 1, 37);
 
 -- --------------------------------------------------------
 
@@ -366,7 +376,8 @@ INSERT INTO `system_program` (`id`, `name`, `controller`) VALUES
 (33, 'System Table List', 'SystemTableList'),
 (34, 'System Data Browser', 'SystemDataBrowser'),
 (35, 'CUSTOMER - GRID', 'CustomerDataGridView'),
-(36, 'CUSTOMER FORM', 'CustomerFormView');
+(36, 'CUSTOMER FORM', 'CustomerFormView'),
+(37, 'CUSTOMER', 'CustomerDialogInputView');
 
 -- --------------------------------------------------------
 
@@ -480,7 +491,8 @@ CREATE TABLE `system_user_unit` (
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `customer_document_number_unique` (`document_number`);
+  ADD UNIQUE KEY `customer_document_number_unique` (`document_number`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Índices de tabela `customer_address`
@@ -614,7 +626,7 @@ ALTER TABLE `system_user_unit`
 -- AUTO_INCREMENT de tabela `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de tabela `customer_address`
 --
